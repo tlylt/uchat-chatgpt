@@ -98,22 +98,38 @@ const Form = () => {
   });
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center justify-center">
       <button
         onClick={handleReset}
         type="reset"
-        className="fixed p-4 font-bold text-white bg-teal-500 rounded-md top-5 right-5 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+        className="fixed p-3 text-sm font-bold text-white bg-teal-500 rounded-md top-5 left-5 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
       >
         Clear History
       </button>
+      <div className="flex flex-col items-start w-full gap-3 px-2 pt-6 mx-2 last:pb-10 md:mx-auto md:max-w-3xl">
+        {response
+          ? response.map((item: string, index: number) => {
+              return (
+                <div
+                  key={index}
+                  className={`${
+                    index % 2 === 0 ? 'bg-green-200 ml-auto' : 'bg-blue-200'
+                  } p-4 rounded-2xl dark:text-black`}
+                >
+                  <p>{item}</p>
+                </div>
+              );
+            })
+          : null}
+      </div>
+      <div className="mt-20"></div>
       <form
         onSubmit={handleSubmit}
-        className="fixed bottom-5 w-full md:max-w-3xl bg-white-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] mb-4"
+        className="fixed bottom-0 w-full md:max-w-3xl bg-white-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)]"
       >
         <textarea
           name="Message"
           placeholder="Type your message here..."
-          // minLength={1}
           ref={messageInput}
           onKeyDown={handleEnter}
           className="w-full pt-4 pl-4 translate-y-1 bg-transparent shadow-lg outline-none resize-none"
@@ -137,22 +153,6 @@ const Form = () => {
           </svg>
         </button>
       </form>
-      <div className="flex flex-col items-start w-full gap-3 pt-6 pb-20 mx-2 last:mb-10 md:mx-auto md:max-w-3xl h-5/6">
-        {response
-          ? response.map((item: string, index: number) => {
-              return (
-                <div
-                  key={index}
-                  className={`${
-                    index % 2 === 0 ? 'bg-green-200 ml-auto' : 'bg-blue-200'
-                  } p-4 rounded-2xl`}
-                >
-                  <p>{item}</p>
-                </div>
-              );
-            })
-          : null}
-      </div>
     </div>
   );
 };
