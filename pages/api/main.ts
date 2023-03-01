@@ -7,18 +7,18 @@ require('dotenv-safe').config();
 
 type Data = any;
 
+const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+const store = new KeyvRedis(redisUrl);
+const messageStore = new Keyv({ store, namespace: 'chatgpt-demo' });
+const api = new ChatGPTAPI({
+  apiKey: process.env.OPENAI_API_KEY || '', // Your OpenAI API Key
+  messageStore,
+});
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
-  const store = new KeyvRedis(redisUrl);
-  const messageStore = new Keyv({ store, namespace: 'chatgpt-demo' });
-  const api = new ChatGPTAPI({
-    apiKey: process.env.OPENAI_API_KEY || '', // Your OpenAI API Key
-    messageStore,
-  });
-
   if (req.body.message === '') {
     res.status(200).json({
       message: 'Please type something',
