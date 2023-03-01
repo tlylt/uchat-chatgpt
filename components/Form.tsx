@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import useSWR from 'swr';
 import { toast } from 'react-toastify';
+import Loading from './Loading';
 
 const Form = () => {
   const messageInput = useRef<HTMLTextAreaElement | null>(null);
@@ -122,6 +123,7 @@ const Form = () => {
             })
           : null}
       </div>
+      <Loading active={isLoading} />
       <div className="mt-20"></div>
       <form
         onSubmit={handleSubmit}
