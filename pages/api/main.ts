@@ -19,8 +19,20 @@ export default async function handler(
     messageStore,
   });
 
+  if (req.body.message === '') {
+    res.status(200).json({
+      message: 'Please type something',
+    });
+    return;
+  }
+
   let openAiRes;
-  if (req.body.conversationId && req.body.parentMessageId) {
+  if (
+    req.body.conversationId &&
+    req.body.conversationId !== '' &&
+    req.body.parentMessageId &&
+    req.body.parentMessageId !== ''
+  ) {
     const opts = {
       conversationId: req.body.conversationId,
       parentMessageId: req.body.parentMessageId,
@@ -31,15 +43,7 @@ export default async function handler(
   }
 
   res.status(200).json({
-    version: 'v1',
-    content: {
-      messages: [
-        {
-          type: 'text',
-          text: openAiRes.text,
-        },
-      ],
-    },
+    message: openAiRes.text,
     conversationId: openAiRes.conversationId,
     messageId: openAiRes.id,
   });
